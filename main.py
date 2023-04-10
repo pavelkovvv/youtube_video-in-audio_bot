@@ -26,7 +26,7 @@ def error(update: Update, context: CallbackContext):
 
 
 def main():
-    updater = Updater('',
+    updater = Updater('6122059860:AAGLYVja69l4Vv-yWSeDEC0I4PqKX24ZerU',
                       use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('start', start))
