@@ -1,11 +1,12 @@
 import os
 
+
+from dotenv import load_dotenv
+from video_in_audio import video_in_audio, del_create_file
 from telegram import Update
 from telegram.ext import (Updater, CommandHandler, MessageHandler,
                           CallbackContext, Filters)
-from dotenv import load_dotenv
 
-from video_in_audio import video_in_audio, del_create_file
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -17,11 +18,14 @@ def start(update: Update, context: CallbackContext):
 
 
 def send_audio(update: Update, context: CallbackContext):
+    update.message.reply_text('Если длительность видео, которое Вы'
+                              ' отправили больше 1 часа, то ожидание'
+                              ' конвертации может занять от 3 до 10 минут')
     url = update.message.text
-    if len(video_in_audio(url)) > 2:
-        update.message.reply_text(video_in_audio(url))
+    audio_file_path, audio_file = video_in_audio(url)
+    if audio_file is None:
+        update.message.reply_text(audio_file_path)
     else:
-        audio_file_path, audio_file = video_in_audio(url)
         with open(audio_file, 'rb') as audio:
             update.message.reply_audio(audio)
         del_create_file(audio_file_path)
