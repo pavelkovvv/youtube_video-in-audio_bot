@@ -1,6 +1,5 @@
 import os
 
-
 from dotenv import load_dotenv
 from video_in_audio import video_in_audio, del_create_file
 from telegram import Update
@@ -19,7 +18,7 @@ def start(update: Update, context: CallbackContext):
 
 def send_audio(update: Update, context: CallbackContext):
     update.message.reply_text('Если длительность видео, которое Вы'
-                              ' отправили больше 1 часа, то ожидание'
+                              ' отправили больше 1.5 часов, то ожидание'
                               ' конвертации может занять от 3 до 10 минут')
     url = update.message.text
     audio_file_path, audio_file = video_in_audio(url)

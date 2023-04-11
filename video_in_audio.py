@@ -15,23 +15,22 @@ def video_in_audio(url: str):
 
     try:
         yt = YouTube(url)
-        stream = yt.streams.get_audio_only()
-        audio_file = stream.download()
+        stream = yt.streams.filter(only_audio=True).first()
+        audio_file = stream.download(output_path='.', filename='audio.mp3')
         audio_file_path = os.path.abspath(audio_file)
         audio_file_path = audio_file_path.split('\\')[-1]
         file_size = os.path.getsize(audio_file_path)
-        if file_size < 48000000:
+        if file_size < 49500000:
             return audio_file_path, audio_file
         result = subprocess.run(
             ['ffprobe', '-v', 'error', '-show_entries', 'format=bit_rate',
              '-of', 'default=noprint_wrappers=1:nokey=1', audio_file_path],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         bit_rate = int(result.stdout.decode('utf-8').strip()) / 1000
-        bitrate = (NEED_SIZE * bit_rate) / file_size
-        print(bitrate)
+        bitrate = ((NEED_SIZE * bit_rate) / file_size)
         output_file = audio_file_path
-        audio = AudioSegment.from_file(audio_file_path, "mp4")
-        audio.export(output_file, format="mp4", bitrate=str(bitrate))
+        sound = AudioSegment.from_file(output_file)
+        sound.export(output_file, format="mp3", bitrate=f'{int(bitrate)}k')
         return audio_file_path, audio_file
     except VideoUnavailable:
         raise_message = f'Видео по ссылке {url} не найдено.'
@@ -43,5 +42,3 @@ def del_create_file(filename: str):
     """Функция, позволяющая удалить ранее созданный файл"""
 
     os.remove(filename)
-
-video_in_audio('https://www.youtube.com/watch?v=D1DVpRSA_j8')

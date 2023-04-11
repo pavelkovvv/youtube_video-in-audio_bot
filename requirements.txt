@@ -3,3 +3,4 @@ python-telegram-bot==13.7
 python-dotenv==1.0.0
 ffmpeg==1.4
 moviepy==1.0.3
+pydub~=0.25.1
