@@ -13,7 +13,7 @@
 - Python 3.11.3;
 - Python-telegram-bot;
 - API Telegram;
-- FFMPEG;
+- FFMPEG; 
 
 ## Запуск проекта
 
